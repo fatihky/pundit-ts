@@ -2,6 +2,12 @@
 
 Pundit-TS is an authorization library highly-inspired by the [pundit](https://github.com/varvet/pundit) gem.
 
+
+
+https://github.com/user-attachments/assets/02994236-0182-4d84-a8b8-25589a511aad
+
+
+
 ### Usage
 
 Install the package first:
