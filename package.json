@@ -1,0 +1,33 @@
+{
+  "name": "pundit-ts",
+  "version": "0.1.0",
+  "description": "Authorization library in pure typescript.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "example": "examples"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fatihky/pundit-ts.git"
+  },
+  "keywords": [
+    "authorization",
+    "pundit"
+  ],
+  "author": "Fatih Kaya <1994274@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fatihky/pundit-ts/issues"
+  },
+  "homepage": "https://github.com/fatihky/pundit-ts#readme",
+  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
+}
