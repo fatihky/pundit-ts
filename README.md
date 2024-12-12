@@ -20,6 +20,8 @@ https://github.com/user-attachments/assets/02994236-0182-4d84-a8b8-25589a511aad
   - CategoryActions: create, update, delete
 - **Filter entities** on database to avoid unnecessary database queries
   - Apply joins, specific `where` clauses or similar things to filter database rows.
+- **Apply user tiers:** only premium users can add more than 3 seats to their organization.
+- **Avoid code duplication:** Keep your authorization logic in one place. Use whenever you need them. Change one place to affect rest of the code.
 
 ### Examples
 
@@ -33,6 +35,35 @@ Install the package first:
 
 ```sh
 npm i -S pundit-ts
+```
+
+### Authorize users
+
+Encapsulate your authorization logic behind your `PunditPolicy` implementations. Reuse those policies when you need. Manage your authorization logic from one place.
+
+```diff
+const currentUser = {}; // get user from cookies, headers, jwt etc...
+
+// update post
+
+// fetch post from db
+const post = await prisma.post.findFirst({ where: { id: 123 } });
+
+- if (post.authorId === currentUser.id) {
+-   // update logic...
+- }
++ if (await pundit.authorize(currentUser, post, 'update')) {
++   // update logic...
++ }
+```
+
+### Filter entitites
+
+Pundit-TS is a ORM-agnostic library. You may use your choice of ORM, query builder or anything.
+
+```diff
+-prisma.post.findMany({ /* your arguments  */ })
++prisma.post.findMany(pundit.filter(context, Post))
 ```
 
 Declare your models.

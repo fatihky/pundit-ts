@@ -1,9 +1,9 @@
 import { PrismaClient, User } from "@prisma/client";
+import { punditMatchNothing } from "pundit-ts";
 import { Post } from "./entities/Post";
 import { pundit } from "./policies";
 import { PolicyContext } from "./policies/policy-context";
 import { PostActions } from "./policies/post.policy";
-import { punditMatchNothing } from "pundit-ts";
 
 async function check(
   prisma: PrismaClient,
