@@ -1,7 +1,7 @@
 import { Pundit } from "pundit-ts";
 import { PolicyContext } from "./policy-context";
-import { UserPolicy } from "./user.policy";
 import { PostPolicy } from "./post.policy";
+import { UserPolicy } from "./user.policy";
 
 export const pundit = new Pundit<PolicyContext>()
   .register(new UserPolicy())

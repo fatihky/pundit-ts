@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm run prisma:generate",
     "prisma:generate": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +19,6 @@
   },
   "dependencies": {
     "@prisma/client": "6.0.1",
-    "pundit-ts": "^0.1.0"
+    "pundit-ts": "^0.2.7"
   }
 }

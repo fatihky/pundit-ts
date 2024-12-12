@@ -1,5 +1,5 @@
-import { User } from "@prisma/client";
 import { PunditPolicy } from "pundit-ts";
+import { User } from "../entities/User";
 import { PolicyContext } from "./policy-context";
 
 export type UserActions = "create";
@@ -12,6 +12,10 @@ export class UserPolicy
   }
 
   async filter(context: PolicyContext): Promise<void> {}
+
+  handlesModelConstructor(cons: unknown): cons is new () => User {
+    return cons === User;
+  }
 
   handlesAction(action: unknown): action is UserActions {
     return action === "create";
