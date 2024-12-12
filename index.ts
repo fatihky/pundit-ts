@@ -6,14 +6,20 @@ type AuthorizationMethod<C, M, A> = (
   context: C,
   object: M,
   action: A
-) => Promise<boolean>;
+) => boolean | Promise<boolean>;
 
-export type PunditPolicy<Context, Model, Actions extends string> = {
+export type PunditPolicy<
+  Context,
+  Model,
+  Actions extends string,
+  Filter = unknown
+> = {
   [K in Actions as `can${Pascal<K>}`]: AuthorizationMethod<Context, Model, K>;
 } & {
   handlesAction(action: unknown): action is Actions;
   handlesModel(object: unknown): object is Model;
-  filter(context: Context): Promise<void>;
+  handlesModelConstructor(cons: unknown): cons is new () => Model;
+  filter(context: Context): Filter | Promise<Filter>;
 };
 
 type FindAction<C, P extends PunditPolicy<C, unknown, any>[], M> = P extends [
@@ -27,15 +33,27 @@ type FindAction<C, P extends PunditPolicy<C, unknown, any>[], M> = P extends [
     : C
   : "No proper policy registered for handling this model type";
 
+type FindFilterType<
+  C,
+  P extends PunditPolicy<C, unknown, any>[],
+  M
+> = P extends [infer F, ...infer R]
+  ? F extends PunditPolicy<C, M, infer _, infer Filter>
+    ? Filter
+    : R extends PunditPolicy<C, any, any>[]
+    ? FindFilterType<C, R, M>
+    : C
+  : "No proper policy registered for handling this model type";
+
 export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
   constructor(private policies: PunditPolicy<C, unknown, any>[] = []) {}
 
-  register<M, A extends string>(
-    policy: PunditPolicy<C, M, A>
-  ): Pundit<C, [...P, PunditPolicy<C, M, A>]> {
+  register<M, A extends string, F>(
+    policy: PunditPolicy<C, M, A, F>
+  ): Pundit<C, [...P, PunditPolicy<C, M, A, F>]> {
     return new Pundit(this.policies.concat(policy)) as unknown as Pundit<
       C,
-      [...P, PunditPolicy<C, M, A>]
+      [...P, PunditPolicy<C, M, A, F>]
     >;
   }
 
@@ -63,6 +81,22 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
     >;
 
     return await method(ctx, object, action);
+  }
+
+  async filter<M>(
+    context: C,
+    cons: new (...args: any[]) => M
+  ): Promise<FindFilterType<C, P, M>> {
+    const policy = this.policies.find(
+      (p): p is PunditPolicy<C, M, any, FindFilterType<C, P, M>> =>
+        p.handlesModelConstructor(cons)
+    );
+
+    if (!policy) {
+      throw new Error(`No policy found for model constructor ${cons}`);
+    }
+
+    return await Promise.resolve(policy.filter(context));
   }
 }
 
