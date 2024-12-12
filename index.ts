@@ -1,3 +1,8 @@
+// Used when the PunditPolicy#filter() decides NOTHING should be matched.
+// This serves the same purpose of ActiveRecord's `none` query method.
+// See: https://apidock.com/rails/v7.1.3.4/ActiveRecord/QueryMethods/none
+export const punditMatchNothing: unique symbol = Symbol("punditMatchNothing");
+
 type Pascal<T> = T extends `${infer F}${infer Rest}`
   ? `${Capitalize<F>}${Rest}`
   : never;
@@ -19,7 +24,9 @@ export type PunditPolicy<
   handlesAction(action: unknown): action is Actions;
   handlesModel(object: unknown): object is Model;
   handlesModelConstructor(cons: unknown): cons is new () => Model;
-  filter(context: Context): Filter | Promise<Filter>;
+  filter(
+    context: Context
+  ): Filter | Promise<Filter> | typeof punditMatchNothing;
 };
 
 type FindAction<C, P extends PunditPolicy<C, unknown, any>[], M> = P extends [
@@ -86,7 +93,7 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
   async filter<M>(
     context: C,
     cons: new (...args: any[]) => M
-  ): Promise<FindFilterType<C, P, M>> {
+  ): Promise<FindFilterType<C, P, M> | typeof punditMatchNothing> {
     const policy = this.policies.find(
       (p): p is PunditPolicy<C, M, any, FindFilterType<C, P, M>> =>
         p.handlesModelConstructor(cons)
