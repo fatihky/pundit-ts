@@ -2,19 +2,23 @@
 
 Pundit-TS is an authorization library highly-inspired by the [pundit](https://github.com/varvet/pundit) gem.
 
-Pundit-TS is a fully type-safe `pundit` alternative.  
-Here how it auto-completes the actions based on the object you pass:
+<small>
+  Pundit-TS is a fully type-safe `pundit` alternative.<br/>
+  Here how it auto-completes the actions based on the object you pass:
+</small>
 
 https://github.com/user-attachments/assets/02994236-0182-4d84-a8b8-25589a511aad
 
+<br/>
+
 ### Use Cases
 
-- Check if a user is authorized to perform an action on an entity (ie. Post, Product, Category etc..)
-- Declare actions can be performed per entity class basis
+- **Check if a user is authorized** to perform an action on an entity (ie. Post, Product, Category etc..)
+- **Declare actions** can be performed per entity class basis
   - UserActions: create, update
   - PostActions: create, publish, unpublish, update, delete
   - CategoryActions: create, update, delete
-- Filter entities on database to avoid unnecessary database queries
+- **Filter entities** on database to avoid unnecessary database queries
   - Apply joins, specific `where` clauses or similar things to filter database rows.
 
 ### Examples
