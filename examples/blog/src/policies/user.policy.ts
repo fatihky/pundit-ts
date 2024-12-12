@@ -20,4 +20,8 @@ export class UserPolicy
   handlesModel(object: unknown): object is User {
     return object instanceof User;
   }
+
+  handlesModelConstructor(cons: unknown): cons is new () => User {
+    return cons === User;
+  }
 }

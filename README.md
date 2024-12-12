@@ -2,11 +2,26 @@
 
 Pundit-TS is an authorization library highly-inspired by the [pundit](https://github.com/varvet/pundit) gem.
 
-
+Pundit-TS is a fully type-safe `pundit` alternative.  
+Here how it auto-completes the actions based on the object you pass:
 
 https://github.com/user-attachments/assets/02994236-0182-4d84-a8b8-25589a511aad
 
+### Use Cases
 
+- Check if a user is authorized to perform an action on an entity (ie. Post, Product, Category etc..)
+- Declare actions can be performed per entity class basis
+  - UserActions: create, update
+  - PostActions: create, publish, unpublish, update, delete
+  - CategoryActions: create, update, delete
+- Filter entities on database to avoid unnecessary database queries
+  - Apply joins, specific `where` clauses or similar things to filter database rows.
+
+### Examples
+
+**Blog**: Plain typescript blog example. Has no relation with a database. Great starting point if you are just starting to use pundit-ts
+
+**Prisma Blog**: Prisma ORM based blog example. Advanced version of the plain blog example. Uses Prisma ORM for querying database, utilizes `PostPolicy#filter` for building argument for `prisma.post.findMany` method.
 
 ### Usage
 

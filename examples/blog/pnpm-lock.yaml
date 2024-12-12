@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       pundit-ts:
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.7
+        version: 0.2.7
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -75,8 +75,8 @@ packages:
   make-error@1.3.6:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
 
-  pundit-ts@0.1.0:
-    resolution: {integrity: sha512-D5VUe8k525j6ArF/f1WJfHopUuilQ+oeDIWBqB3GS26z3dsgG6oLzTTkROkoCtxn5r7xXSd+wiReKb6Z22xitQ==}
+  pundit-ts@0.2.7:
+    resolution: {integrity: sha512-LoOO1BROUj6CHzGRfAetUZrNGmiY0+HXK6ojJbbeWndb458EhCHEH66liSBJf8AItOsTN2txg0zvZX5rezMVOg==}
 
   ts-node@10.9.2:
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
@@ -148,7 +148,7 @@ snapshots:
 
   make-error@1.3.6: {}
 
-  pundit-ts@0.1.0: {}
+  pundit-ts@0.2.7: {}
 
   ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2):
     dependencies:

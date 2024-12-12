@@ -30,4 +30,8 @@ export class PostPolicy
   handlesModel(object: unknown): object is Post {
     return object instanceof Post;
   }
+
+  handlesModelConstructor(cons: unknown): cons is new () => Post {
+    return cons === Post;
+  }
 }
