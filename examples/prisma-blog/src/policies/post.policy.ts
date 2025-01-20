@@ -5,18 +5,19 @@ import { PolicyContext } from "./policy-context";
 
 export type PostActions = "create" | "update";
 
-export class PostPolicy
-  implements
-    PunditPolicy<PolicyContext, Post, PostActions, Prisma.PostFindManyArgs>
-{
-  async canCreate(context: PolicyContext, post: Post) {
-    // users may only create posts on their behalf.
-    return context.actor?.isAdmin || post.authorId === context.actor?.id;
-  }
-
-  async canUpdate(context: PolicyContext, post: Post) {
-    // users may only update their own posts
-    return context.actor?.isAdmin || post.authorId === context.actor?.id;
+export class PostPolicy extends PunditPolicy<
+  PolicyContext,
+  Post,
+  PostActions,
+  Prisma.PostFindManyArgs
+> {
+  authorize(context: PolicyContext, post: Post, action: PostActions): boolean {
+    switch (action) {
+      case "create":
+        return context.actor?.isAdmin || post.authorId === context.actor?.id;
+      case "update":
+        return context.actor?.isAdmin || post.authorId === context.actor?.id;
+    }
   }
 
   filter(context: PolicyContext) {

@@ -7,7 +7,11 @@ export type UserActions = "create";
 export class UserPolicy
   implements PunditPolicy<PolicyContext, User, UserActions>
 {
-  async canCreate() {
+  authorize(
+    _context: PolicyContext,
+    _object: User,
+    _action: "create"
+  ): Promise<boolean> | boolean {
     return true;
   }
 

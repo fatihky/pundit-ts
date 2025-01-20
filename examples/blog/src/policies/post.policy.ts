@@ -1,28 +1,18 @@
-import { PunditPolicy } from "pundit-ts";
+import { PunditPolicy } from "../../../../index";
 import { Post } from "../models";
 import { PolicyContext } from "./policy-context";
 
 export type PostActions = "create" | "publish" | "unpublish" | "update";
 
-export class PostPolicy
-  implements PunditPolicy<PolicyContext, Post, PostActions>
-{
-  async canCreate(context: PolicyContext, post: Post) {
-    // users may only create posts on their behalf.
-    return this.isAdminOrAuthor(context, post);
-  }
-
-  async canPublish(context: PolicyContext, post: Post) {
-    return this.isAdminOrAuthor(context, post);
-  }
-
-  async canUnpublish(context: PolicyContext, post: Post) {
-    return this.isAdminOrAuthor(context, post);
-  }
-
-  async canUpdate(context: PolicyContext, post: Post) {
-    // users may only update their own posts
-    return this.isAdminOrAuthor(context, post);
+export class PostPolicy extends PunditPolicy<PolicyContext, Post, PostActions> {
+  authorize(context: PolicyContext, post: Post, action: PostActions): boolean {
+    switch (action) {
+      case "create":
+      case "publish":
+      case "unpublish":
+      case "update":
+        return this.isAdminOrAuthor(context, post);
+    }
   }
 
   async filter(context: PolicyContext): Promise<void> {}

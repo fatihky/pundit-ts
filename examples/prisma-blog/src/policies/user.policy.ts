@@ -4,10 +4,12 @@ import { PolicyContext } from "./policy-context";
 
 export type UserActions = "create";
 
-export class UserPolicy
-  implements PunditPolicy<PolicyContext, User, UserActions>
-{
-  async canCreate() {
+export class UserPolicy extends PunditPolicy<PolicyContext, User, UserActions> {
+  authorize(
+    _context: PolicyContext,
+    _user: User,
+    _action: "create"
+  ): Promise<boolean> | boolean {
     return true;
   }
 
