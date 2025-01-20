@@ -3,31 +3,24 @@
 // See: https://apidock.com/rails/v7.1.3.4/ActiveRecord/QueryMethods/none
 export const punditMatchNothing: unique symbol = Symbol("punditMatchNothing");
 
-type Pascal<T> = T extends `${infer F}${infer Rest}`
-  ? `${Capitalize<F>}${Rest}`
-  : never;
-
-type AuthorizationMethod<C, M, A> = (
-  context: C,
-  object: M,
-  action: A
-) => boolean | Promise<boolean>;
-
-export type PunditPolicy<
+export abstract class PunditPolicy<
   Context,
   Model,
   Actions extends string,
   Filter = unknown
-> = {
-  [K in Actions as `can${Pascal<K>}`]: AuthorizationMethod<Context, Model, K>;
-} & {
-  handlesAction(action: unknown): action is Actions;
-  handlesModel(object: unknown): object is Model;
-  handlesModelConstructor(cons: unknown): cons is new () => Model;
-  filter(
+> {
+  abstract authorize(
+    context: Context,
+    object: Model,
+    action: Actions
+  ): Promise<boolean> | boolean;
+  abstract handlesAction(action: unknown): action is Actions;
+  abstract handlesModel(object: unknown): object is Model;
+  abstract handlesModelConstructor(cons: unknown): cons is new () => Model;
+  abstract filter(
     context: Context
   ): Filter | Promise<Filter> | typeof punditMatchNothing;
-};
+}
 
 type FindAction<C, P extends PunditPolicy<C, unknown, any>[], M> = P extends [
   infer F,
@@ -78,16 +71,7 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
       throw new Error(`No policy found for model ${object}`);
     }
 
-    const methodName = `can${
-      toPascal(action) as Pascal<typeof action>
-    }` as const;
-    const method = policy[methodName] as AuthorizationMethod<
-      C,
-      M,
-      typeof action
-    >;
-
-    return await method(ctx, object, action);
+    return await policy.authorize(ctx, object, action);
   }
 
   async filter<M>(
@@ -105,8 +89,4 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
 
     return await Promise.resolve(policy.filter(context));
   }
-}
-
-function toPascal(input: string): string {
-  return input[0].toLocaleUpperCase().concat(input.substring(1));
 }

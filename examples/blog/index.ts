@@ -43,3 +43,9 @@ async function check(user: User, post: Post, action: PostActions) {
 
   console.log("Is Authorized:", await pundit.authorize(context, post, action));
 }
+
+const context = new PolicyContext(admin);
+
+pundit.authorize(context, john, "create");
+
+pundit.authorize(context, post1, "publish");
