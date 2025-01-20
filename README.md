@@ -95,19 +95,16 @@ export class PolicyContext {
   // your orm related properties might go here
 }
 
-export class PostPolicy
-  implements PunditPolicy<PolicyContext, Post, PostActions>
-{
-  async canCreate() {
-    return false;
-  }
-
-  async canDelete() {
-    return false;
-  }
-
-  async canUpdate() {
-    return false;
+export class PostPolicy extends PunditPolicy<PolicyContext, Post, PostActions> {
+  authorize(context, post, action) {
+    switch (action) {
+      case "create":
+        return true;
+      case "delete":
+        return false; // to be implemented...
+      case "update":
+        return false; // to be implemented...
+    }
   }
 
   handlesAction(action) {
@@ -123,19 +120,16 @@ export class PostPolicy
   }
 }
 
-export class UserPolicy
-  implements PunditPolicy<PolicyContext, User, UserActions>
-{
-  async canCreate() {
-    return false;
-  }
-
-  async canDelete() {
-    return false;
-  }
-
-  async canUpdate() {
-    return false;
+export class UserPolicy extends PunditPolicy<PolicyContext, User, UserActions> {
+  authorize(context, post, action) {
+    switch (action) {
+      case "create":
+        return true;
+      case "delete":
+        return false; // to be implemented...
+      case "update":
+        return false; // to be implemented...
+    }
   }
 
   handlesAction(action) {
