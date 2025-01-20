@@ -1,6 +1,6 @@
 {
   "name": "pundit-ts",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "description": "Authorization library in pure typescript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
