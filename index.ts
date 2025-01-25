@@ -9,7 +9,7 @@ export abstract class PunditPolicy<
   Actions extends string,
   Filter = unknown
 > {
-  constructor(private cons: new () => Model) {}
+  constructor(private cons: new (...args: any[]) => Model) {}
 
   abstract authorize(
     context: Context,
