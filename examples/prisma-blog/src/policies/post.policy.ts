@@ -11,6 +11,10 @@ export class PostPolicy extends PunditPolicy<
   PostActions,
   Prisma.PostFindManyArgs
 > {
+  constructor() {
+    super(Post);
+  }
+
   authorize(context: PolicyContext, post: Post, action: PostActions): boolean {
     switch (action) {
       case "create":
@@ -27,17 +31,5 @@ export class PostPolicy extends PunditPolicy<
       include: { author: true },
       where: { authorId: context.actor?.id },
     } satisfies Prisma.PostFindManyArgs;
-  }
-
-  handlesAction(action: unknown): action is PostActions {
-    return action === "create" || action === "update";
-  }
-
-  handlesModel(object: unknown): object is Post {
-    return true; // cannot perform instanceof check here
-  }
-
-  handlesModelConstructor(cons: unknown): cons is new () => Post {
-    return cons === Post;
   }
 }

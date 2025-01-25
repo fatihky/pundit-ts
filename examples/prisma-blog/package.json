@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "@prisma/client": "6.0.1",
-    "pundit-ts": "^0.3.0"
+    "pundit-ts": "^0.4.1"
   }
 }

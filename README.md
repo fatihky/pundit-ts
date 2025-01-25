@@ -96,6 +96,10 @@ export class PolicyContext {
 }
 
 export class PostPolicy extends PunditPolicy<PolicyContext, Post, PostActions> {
+  constructor() {
+    super(Post);
+  }
+
   authorize(context, post, action) {
     switch (action) {
       case "create":
@@ -113,6 +117,10 @@ export class PostPolicy extends PunditPolicy<PolicyContext, Post, PostActions> {
 }
 
 export class UserPolicy extends PunditPolicy<PolicyContext, User, UserActions> {
+  constructor() {
+    super(User);
+  }
+
   authorize(context, post, action) {
     switch (action) {
       case "create":
@@ -125,7 +133,7 @@ export class UserPolicy extends PunditPolicy<PolicyContext, User, UserActions> {
   }
 
   filter(ctx) {
-    // modify context
+    // modify context or return some filter object...
   }
 }
 ```

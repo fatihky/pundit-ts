@@ -4,9 +4,11 @@ import { PolicyContext } from "./policy-context";
 
 export type UserActions = "create";
 
-export class UserPolicy
-  implements PunditPolicy<PolicyContext, User, UserActions>
-{
+export class UserPolicy extends PunditPolicy<PolicyContext, User, UserActions> {
+  constructor() {
+    super(User);
+  }
+
   authorize(
     _context: PolicyContext,
     _object: User,
@@ -16,16 +18,4 @@ export class UserPolicy
   }
 
   async filter(context: PolicyContext): Promise<void> {}
-
-  handlesAction(action: unknown): action is UserActions {
-    return action === "create";
-  }
-
-  handlesModel(object: unknown): object is User {
-    return object instanceof User;
-  }
-
-  handlesModelConstructor(cons: unknown): cons is new () => User {
-    return cons === User;
-  }
 }

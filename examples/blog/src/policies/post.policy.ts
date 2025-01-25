@@ -1,10 +1,14 @@
-import { PunditPolicy } from "../../../../index";
+import { PunditPolicy } from "pundit-ts";
 import { Post } from "../models";
 import { PolicyContext } from "./policy-context";
 
 export type PostActions = "create" | "publish" | "unpublish" | "update";
 
 export class PostPolicy extends PunditPolicy<PolicyContext, Post, PostActions> {
+  constructor() {
+    super(Post);
+  }
+
   authorize(context: PolicyContext, post: Post, action: PostActions): boolean {
     switch (action) {
       case "create":
@@ -16,18 +20,6 @@ export class PostPolicy extends PunditPolicy<PolicyContext, Post, PostActions> {
   }
 
   async filter(context: PolicyContext): Promise<void> {}
-
-  handlesAction(action: unknown): action is PostActions {
-    return action === "create" || action === "update";
-  }
-
-  handlesModel(object: unknown): object is Post {
-    return object instanceof Post;
-  }
-
-  handlesModelConstructor(cons: unknown): cons is new () => Post {
-    return cons === Post;
-  }
 
   private isAdminOrAuthor(context: PolicyContext, post: Post): boolean {
     return (

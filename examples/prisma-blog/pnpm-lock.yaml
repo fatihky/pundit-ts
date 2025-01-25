@@ -12,8 +12,8 @@ importers:
         specifier: 6.0.1
         version: 6.0.1(prisma@6.0.1)
       pundit-ts:
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.4.1
+        version: 0.4.1
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
@@ -115,8 +115,8 @@ packages:
     engines: {node: '>=18.18'}
     hasBin: true
 
-  pundit-ts@0.3.0:
-    resolution: {integrity: sha512-UB2NuQroQ2hUG1/cjOBdb2fRr+jbiF8f/hHgC4WFXVM5zWSdOmYVS7aAtrLSCAdNKF1bfzS9PcD99s/osaROZA==}
+  pundit-ts@0.4.1:
+    resolution: {integrity: sha512-+38konBWifNThwKLnJx2qRSEgWhCA2aqSFfb8HYL3Epf7gLiMS99vMxHZ51ivXmIuhyluBP55c4tcz4kTRby0w==}
 
   ts-node@10.9.2:
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
@@ -222,7 +222,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  pundit-ts@0.3.0: {}
+  pundit-ts@0.4.1: {}
 
   ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2):
     dependencies:
