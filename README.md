@@ -107,14 +107,6 @@ export class PostPolicy extends PunditPolicy<PolicyContext, Post, PostActions> {
     }
   }
 
-  handlesAction(action) {
-    return action === "create" || action === "delete" || action === "update";
-  }
-
-  handlesModel(object) {
-    return object instanceof User;
-  }
-
   filter(ctx) {
     // modify context
   }
@@ -130,14 +122,6 @@ export class UserPolicy extends PunditPolicy<PolicyContext, User, UserActions> {
       case "update":
         return false; // to be implemented...
     }
-  }
-
-  handlesAction(action) {
-    return action === "create" || action === "delete" || action === "update";
-  }
-
-  handlesModel(object) {
-    return object instanceof User;
   }
 
   filter(ctx) {

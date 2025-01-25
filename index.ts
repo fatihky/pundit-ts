@@ -9,17 +9,25 @@ export abstract class PunditPolicy<
   Actions extends string,
   Filter = unknown
 > {
+  constructor(private cons: new () => Model) {}
+
   abstract authorize(
     context: Context,
     object: Model,
     action: Actions
   ): Promise<boolean> | boolean;
-  abstract handlesAction(action: unknown): action is Actions;
-  abstract handlesModel(object: unknown): object is Model;
-  abstract handlesModelConstructor(cons: unknown): cons is new () => Model;
+
   abstract filter(
     context: Context
   ): Filter | Promise<Filter> | typeof punditMatchNothing;
+
+  handlesModel(object: unknown): object is Model {
+    return object instanceof this.cons;
+  }
+
+  handlesModelConstructor(cons: unknown): cons is new () => Model {
+    return cons === this.cons;
+  }
 }
 
 type FindAction<C, P extends PunditPolicy<C, unknown, any>[], M> = P extends [
@@ -63,8 +71,7 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
     action: FindAction<C, P, M>
   ): Promise<boolean> {
     const policy = this.policies.find(
-      (p): p is PunditPolicy<C, M, typeof action> =>
-        p.handlesModel(object) && p.handlesAction(action)
+      (p): p is PunditPolicy<C, M, typeof action> => p.handlesModel(object)
     );
 
     if (!policy) {
@@ -79,8 +86,9 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
     cons: new (...args: any[]) => M
   ): Promise<FindFilterType<C, P, M> | typeof punditMatchNothing> {
     const policy = this.policies.find(
-      (p): p is PunditPolicy<C, M, any, FindFilterType<C, P, M>> =>
-        p.handlesModelConstructor(cons)
+      (p): p is PunditPolicy<C, M, any, FindFilterType<C, P, M>> => {
+        return p.handlesModelConstructor(cons);
+      }
     );
 
     if (!policy) {
