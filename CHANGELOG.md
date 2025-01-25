@@ -1,3 +1,7 @@
+**v0.4.1**
+
+- The model constructor passed to the `PunditPolicy` might accept arbitrary arguments. The previous implementation required model constructor to accept no arguments.
+
 **v0.4.0**
 
 - Require constructor class to be passed to `new PunditPolicy()`
