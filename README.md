@@ -7,7 +7,7 @@ Pundit-TS is an authorization library highly-inspired by the [pundit](https://gi
   Here how it auto-completes the actions based on the object you pass:
 </small>
 
-https://github.com/user-attachments/assets/02994236-0182-4d84-a8b8-25589a511aad
+https://github.com/user-attachments/assets/c7815622-c1c9-4fbe-986e-6c9f88c8b31d
 
 <br/>
 
