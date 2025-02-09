@@ -13,6 +13,7 @@ https://github.com/user-attachments/assets/02994236-0182-4d84-a8b8-25589a511aad
 
 ### Use Cases
 
+- Apply RBAC, ABAC, DAC models (see the example snippets below for how to implement)
 - **Check if a user is authorized** to perform an action on an entity (ie. Post, Product, Category etc..)
 - **Declare actions** can be performed per entity class basis
   - UserActions: create, update
@@ -29,13 +30,124 @@ https://github.com/user-attachments/assets/02994236-0182-4d84-a8b8-25589a511aad
 
 **Prisma Blog**: Prisma ORM based blog example. Advanced version of the plain blog example. Uses Prisma ORM for querying database, utilizes `PostPolicy#filter` for building argument for `prisma.post.findMany` method.
 
-### Usage
-
-Install the package first:
+### Installation
 
 ```sh
 npm i -S pundit-ts
 ```
+
+### Access Control Models
+
+Here some examples to utilize pundit-ts for applying common access control models like RBAC, ABAC etc..
+
+<details>
+<summary>Role-Based Access Control (RBAC)</summary>
+
+```ts
+class Policy {
+  authorize(ctx, object, action) {
+    const isAuthenticated = ctx.actor !== null;
+    const role = ctx.actor?.role;
+    const isAdmin = role === "admin";
+    const isEditor = role === "editor";
+
+    switch (action) {
+      case "create":
+        return isAdmin || isEditor;
+      case "delete":
+        return isAdmin;
+      case "view":
+        return true; // everyone, including anonymous users can view everything
+      default:
+        return false; // disallow every other action
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Attribute-Based Access Control (ABAC)</summary>
+
+```ts
+class Policy {
+  authorize(ctx, object, action) {
+    // non logged-in users cannot perform any action...
+    if (ctx.actor === null) {
+      throw new UnauthorizedError();
+    }
+
+    const role = ctx.actor.role;
+    const isAdmin = role === "admin";
+    const isEditor = role === "editor";
+
+    switch (action) {
+      case "delete": // only admins can delete the record
+        return isAdmin;
+
+      // update permissions
+      case "update:content":
+        return isAdmin || isEditor;
+      case "update:title":
+        return isAdmin;
+
+      case "view:content":
+      case "view:title":
+        return true; // everyone can view title and content
+
+      default:
+        return false;
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Discretionary Access Control (DAC)</summary>
+
+Great choice for multi-tenant applications (ie. SaaS applications). Here we use `organization` as our tenant.
+
+```ts
+class DocumentPolicy {
+  authorize(ctx, object, action) {
+    if (ctx.actor === null) {
+      return false; // 1. anonymous users cannot perform anything
+    }
+
+    const isOrganizationOwner = ctx.actor.id === object.organization.owner_id;
+
+    if (isOrganizationOwner) {
+      return true; // 2. organization owner can perform any action
+    }
+
+    // 3. check if the actor is member of the related organization
+    const member = object.organization.members.findById(ctx.actor.id);
+
+    if (!member) {
+      return false;
+    }
+
+    switch (action) {
+      case "create":
+        return member.permissions.canCreateDocument;
+      case "update":
+        return member.permissions.canUpdateDocument;
+
+      // 4. Even combine with the Attribute-Based Access Control (ABAC) model
+      case "update:title":
+        return member.permissions.canUpdateDocumentTitle;
+
+      default:
+        return false;
+    }
+  }
+}
+```
+
+</details>
 
 ### Authorize users
 
