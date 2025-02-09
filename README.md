@@ -36,7 +36,7 @@ https://github.com/user-attachments/assets/c7815622-c1c9-4fbe-986e-6c9f88c8b31d
 npm i -S pundit-ts
 ```
 
-### Access Control Models
+### 🔒 Access Control Models
 
 Here some examples to utilize pundit-ts for applying common access control models like RBAC, ABAC etc..
 
@@ -149,7 +149,7 @@ class DocumentPolicy {
 
 </details>
 
-### Authorize users
+### 🔑 Authorize users
 
 Encapsulate your authorization logic behind your `PunditPolicy` implementations. Reuse those policies when you need. Manage your authorization logic from one place.
 
@@ -169,7 +169,7 @@ const post = await prisma.post.findFirst({ where: { id: 123 } });
 + }
 ```
 
-### Filter entitites
+### 🔎 Filter entitites
 
 Pundit-TS is a ORM-agnostic library. You may use your choice of ORM, query builder or anything.
 
@@ -177,6 +177,8 @@ Pundit-TS is a ORM-agnostic library. You may use your choice of ORM, query build
 -prisma.post.findMany({ /* your arguments  */ })
 +prisma.post.findMany(pundit.filter(context, Post))
 ```
+
+### ⌨️ Usage
 
 Declare your models.
 
