@@ -1,3 +1,7 @@
+**v0.4.2**
+
+- Expose `PunditMatchNothing` type.
+
 **v0.4.1**
 
 - The model constructor passed to the `PunditPolicy` might accept arbitrary arguments. The previous implementation required model constructor to accept no arguments.
