@@ -3,6 +3,8 @@
 // See: https://apidock.com/rails/v7.1.3.4/ActiveRecord/QueryMethods/none
 export const punditMatchNothing: unique symbol = Symbol("punditMatchNothing");
 
+export type PunditMatchNothing = typeof punditMatchNothing;
+
 export abstract class PunditPolicy<
   Context,
   Model,
