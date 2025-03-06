@@ -1,3 +1,7 @@
+**v0.5.0**
+
+- Added `.filterFor` method for building filters specific for the actions.
+
 **v0.4.2**
 
 - Expose `PunditMatchNothing` type.
