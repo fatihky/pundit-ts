@@ -1,3 +1,7 @@
+**v0.6.0**
+
+- PunditPolicy implementations' `.authorize`, `.filter` and `.filterFor` methods must return promise (aka. must be async)
+
 **v0.5.0**
 
 - Added `.filterFor` method for building filters specific for the actions.
