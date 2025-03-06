@@ -37,7 +37,7 @@ export abstract class PunditPolicy<
     context: Context,
     object: Model,
     action: Actions,
-  ): Promise<boolean> | boolean;
+  ): Promise<boolean>;
 
   /**
    * Build a generic filter for your entity.
@@ -45,7 +45,7 @@ export abstract class PunditPolicy<
    */
   abstract filter(
     context: Context,
-  ): Filter | Promise<Filter> | typeof punditMatchNothing;
+  ): Promise<Filter | typeof punditMatchNothing>;
 
   /**
    * Build a filter specific for the given action.
@@ -56,7 +56,7 @@ export abstract class PunditPolicy<
   filterFor(
     context: Context,
     action: Actions,
-  ): FilterFor | Promise<FilterFor> | typeof punditMatchNothing {
+  ): Promise<FilterFor | typeof punditMatchNothing> {
     throw new Error("Not implemented.");
   }
 
@@ -169,7 +169,7 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any, any>[] = []> {
       throw new Error(`No policy found for model constructor ${cons}`);
     }
 
-    return await Promise.resolve(policy.filter(context));
+    return await policy.filter(context);
   }
 
   /**
@@ -190,6 +190,6 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any, any>[] = []> {
       throw new Error(`No policy found for model constructor ${cons}`);
     }
 
-    return await Promise.resolve(policy.filterFor(context, action));
+    return await policy.filterFor(context, action);
   }
 }
