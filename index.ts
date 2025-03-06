@@ -1,10 +1,26 @@
-// Used when the PunditPolicy#filter() decides NOTHING should be matched.
-// This serves the same purpose of ActiveRecord's `none` query method.
-// See: https://apidock.com/rails/v7.1.3.4/ActiveRecord/QueryMethods/none
+/**
+ * punditMatchNothing: This is what your Policy class should return if the
+ * current context IS NOT authorized to query this entity.
+ * You should throw a "not authorized" error when your `pundit.filter()`
+ * call returns this.
+ * 
+ * Used when the PunditPolicy#filter() decides NOTHING should be matched.
+ * This serves the same purpose of ActiveRecord's `none` query method.
+ * See: https://apidock.com/rails/v7.1.3.4/ActiveRecord/QueryMethods/none
+ */
 export const punditMatchNothing: unique symbol = Symbol("punditMatchNothing");
 
 export type PunditMatchNothing = typeof punditMatchNothing;
 
+/**
+ * Base class for your policies.
+ * Extend this class for each of your entities.
+ * Declare your authorization logic in the `authorize()` method and
+ * filtering logic in `filter()` and `filterFor()` methods.
+ * 
+ * You should `.register()` your policies to your own pundit instance
+ * so your entity will be correctly recognized.
+ */
 export abstract class PunditPolicy<
   Context,
   Model,
@@ -32,6 +48,9 @@ export abstract class PunditPolicy<
   }
 }
 
+/**
+ * Find a proper action type for the given entity class.
+ */
 type FindAction<C, P extends PunditPolicy<C, unknown, any>[], M> = P extends [
   infer F,
   ...infer R,
@@ -43,6 +62,10 @@ type FindAction<C, P extends PunditPolicy<C, unknown, any>[], M> = P extends [
       : C
   : "No proper policy registered for handling this model type";
 
+/**
+ * Helper generic to find a proper `filter()` result for the given
+ * entity type.
+ */
 type FindFilterType<
   C,
   P extends PunditPolicy<C, unknown, any>[],
@@ -58,6 +81,10 @@ type FindFilterType<
 export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
   constructor(private policies: PunditPolicy<C, unknown, any>[] = []) {}
 
+  /**
+   * Register a policy, then, this pundit instance will be able to
+   * recognize the entity that policy includes.
+   */
   register<M, A extends string, F>(
     policy: PunditPolicy<C, M, A, F>,
   ): Pundit<C, [...P, PunditPolicy<C, M, A, F>]> {
@@ -67,6 +94,10 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
     >;
   }
 
+  /**
+   * Authorize an action on an instance of any of the register()'ed entities.
+   * `action` type will be determined the type of your object's class.
+   */
   async authorize<M>(
     ctx: C,
     object: M,
@@ -83,6 +114,10 @@ export class Pundit<C, P extends PunditPolicy<C, unknown, any>[] = []> {
     return await policy.authorize(ctx, object, action);
   }
 
+  /**
+   * Build a filter for the given entity.
+   * This filter is supposed to be used in your database queries.
+   */
   async filter<M>(
     context: C,
     cons: new (...args: any[]) => M,
