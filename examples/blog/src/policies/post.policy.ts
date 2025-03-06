@@ -1,6 +1,6 @@
 import { PunditPolicy } from "pundit-ts";
 import { Post } from "../models";
-import { PolicyContext } from "./policy-context";
+import type { PolicyContext } from "./policy-context";
 
 export type PostActions = "create" | "publish" | "unpublish" | "update";
 

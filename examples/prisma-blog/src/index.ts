@@ -1,15 +1,15 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient, type User } from "@prisma/client";
 import { punditMatchNothing } from "pundit-ts";
 import { Post } from "./entities/Post";
 import { pundit } from "./policies";
 import { PolicyContext } from "./policies/policy-context";
-import { PostActions } from "./policies/post.policy";
+import type { PostActions } from "./policies/post.policy";
 
 async function check(
   prisma: PrismaClient,
   actor: User | null,
   post: Post,
-  action: PostActions
+  action: PostActions,
 ) {
   const context = new PolicyContext(prisma, actor);
   const isAuthorized = await pundit.authorize(context, post, action);

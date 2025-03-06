@@ -1,6 +1,6 @@
 import { PunditPolicy } from "pundit-ts";
 import { User } from "../models";
-import { PolicyContext } from "./policy-context";
+import type { PolicyContext } from "./policy-context";
 
 export type UserActions = "create";
 
@@ -12,7 +12,7 @@ export class UserPolicy extends PunditPolicy<PolicyContext, User, UserActions> {
   authorize(
     _context: PolicyContext,
     _object: User,
-    _action: "create"
+    _action: "create",
   ): Promise<boolean> | boolean {
     return true;
   }

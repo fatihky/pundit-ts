@@ -4,16 +4,16 @@
   "description": "Authorization library in pure typescript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist/index.js",
-    "dist/index.d.ts"
-  ],
+  "files": ["dist/index.js", "dist/index.d.ts"],
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.10.2",
     "typescript": "^5.7.2"
   },
   "scripts": {
     "build": "tsc",
+    "format": "biome format --write",
+    "lint": "biome lint --write",
     "prepublishOnly": "npm run build",
     "test": "jest"
   },
@@ -21,10 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/fatihky/pundit-ts.git"
   },
-  "keywords": [
-    "authorization",
-    "pundit"
-  ],
+  "keywords": ["authorization", "pundit"],
   "author": "Fatih Kaya <1994274@gmail.com>",
   "license": "MIT",
   "bugs": {

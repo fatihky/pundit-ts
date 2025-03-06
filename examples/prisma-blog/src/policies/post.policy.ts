@@ -1,7 +1,7 @@
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { punditMatchNothing, PunditPolicy } from "pundit-ts";
 import { Post } from "../entities/Post";
-import { PolicyContext } from "./policy-context";
+import type { PolicyContext } from "./policy-context";
 
 export type PostActions = "create" | "update";
 

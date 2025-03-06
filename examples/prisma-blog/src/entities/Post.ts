@@ -1,4 +1,4 @@
-import { Post as PrismaPost } from "@prisma/client";
+import type { Post as PrismaPost } from "@prisma/client";
 
 export class Post {
   public id: number;

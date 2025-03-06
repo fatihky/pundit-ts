@@ -1,6 +1,6 @@
 import { Post, User } from "./src/models";
 import { PolicyContext, pundit } from "./src/policies";
-import { PostActions } from "./src/policies/post.policy";
+import type { PostActions } from "./src/policies/post.policy";
 
 console.log("### Users");
 
