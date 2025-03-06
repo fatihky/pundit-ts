@@ -36,7 +36,7 @@ async function main() {
 async function check(user: User, post: Post, action: PostActions) {
   const context = new PolicyContext(user);
 
-  console.log(`\n### Perfom check ###`);
+  console.log("\n### Perfom check ###");
   console.log("Actor:", user.toString());
   console.log("Post:", post.toString());
   console.log("Action:", action);
