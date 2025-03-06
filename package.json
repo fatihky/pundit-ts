@@ -8,14 +8,15 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.10.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.7"
   },
   "scripts": {
     "build": "tsc",
     "format": "biome format --write",
     "lint": "biome lint --write",
     "prepublishOnly": "npm run build",
-    "test": "jest"
+    "test": "vitest"
   },
   "repository": {
     "type": "git",

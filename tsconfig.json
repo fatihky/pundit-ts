@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
-    "rootDir": "./",
     "declaration": true,
-    "lib": ["ES2015"],
-    "outDir": "dist",
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "outDir": "./dist",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
     "strict": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "target": "ES5"
   },
-  "exclude": ["dist", "examples"]
+  "exclude": ["examples"],
+  "include": ["*.ts"]
 }
